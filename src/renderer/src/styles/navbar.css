@@ -1,0 +1,38 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1f1f1f;
+  color: #fff;
+  padding: 15px;
+  height: 60px;
+}
+
+.title-nav {
+  margin-left: 20px;
+}
+
+.title-nav h3 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 28px;
+}
+
+.user-data {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.user-data span {
+  margin-right: 20px;
+}
+
+.btn-navbar {
+  padding: 10px 20px;
+  background-color: #ff4b5c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
