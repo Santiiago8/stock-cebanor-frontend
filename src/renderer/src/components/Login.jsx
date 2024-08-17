@@ -18,7 +18,7 @@ const Login = () => {
       console.log("Enviando solicitud a: ", "http://localhost:3000/users/login");
       console.log("Datos enviados: ", { nombre, contrasena });
 
-      const response = await axios.post('http://localhost:3000/users/login', { nombre, contrasena });
+      const response = await axios.post('http://localhost:3000/users/login', { nombre, contrasena,  });
       const userData = response.data;
       console.log('Datos del usuario recibidos:', userData.user);
 
@@ -46,6 +46,7 @@ const Login = () => {
           onChange={(e) => setNombre(e.target.value)}
           placeholder="Nombre de usuario"
           required
+          autoFocus
           style={styles.input}
         />
         <input

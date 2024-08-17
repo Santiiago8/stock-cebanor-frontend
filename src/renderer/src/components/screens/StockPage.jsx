@@ -1,23 +1,40 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTable, useGlobalFilter } from 'react-table';
 
 export const StockPage = () => {
-  // Datos hardcodeados
-  const hardcodedProducts = [
-    { name: 'Producto A', price: 10.0, stock: 100, stores: 'Sucursal 1' },
-    { name: 'Producto B', price: 20.0, stock: 50, stores: 'Sucursal 2' },
-    { name: 'Producto C', price: 30.0, stock: 75, stores: 'Sucursal 1, Sucursal 2' },
-    // Agrega más productos hardcodeados si es necesario
-  ];
-
-  const [products] = useState(hardcodedProducts);
+  // Estado para los productos
+  const [products, setProducts] = useState([]);
   const [searchInput, setSearchInput] = useState('');
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/products');
+        const data = await response.json();
+        // Mapear los datos para adaptarlos a la estructura de la tabla
+        const mappedProducts = data.map(product => ({
+          name: product.nombre,
+          description: product.descripcion,
+          price: product.precio,
+          stock: product.stores.map(store => `${store.store_name}: ${store.stock}`).join(', '),
+          stores: product.stores.map(store => store.store_name).join(', '),
+        }));
+        setProducts(mappedProducts);
+        console.log('estos son los productos: ', mappedProducts);
+      } catch (error) {
+        console.error('algo salió mal: ', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const data = useMemo(() => products, [products]);
 
   const columns = useMemo(() => [
     { Header: 'Nombre', accessor: 'name' },
+    { Header: 'Descripción', accessor: 'description' },
     { Header: 'Precio', accessor: 'price' },
     { Header: 'Stock', accessor: 'stock' },
     { Header: 'Sucursales', accessor: 'stores' },
@@ -32,9 +49,10 @@ export const StockPage = () => {
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter);
 
-  useMemo(() => {
-    setGlobalFilter(searchInput);
-  }, [searchInput, setGlobalFilter]);
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+    setGlobalFilter(e.target.value);
+  };
 
   return (
     <div style={styles.container}>
@@ -42,7 +60,7 @@ export const StockPage = () => {
         type="text"
         placeholder="Buscar productos..."
         value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
+        onChange={handleSearchChange}
         style={styles.searchInput}
       />
       <table {...getTableProps()} style={styles.table}>
@@ -92,10 +110,6 @@ const styles = {
     width: '100%',
     boxSizing: 'border-box',
   },
-  tableContainer: {
-    flex: 1,
-    overflowY: 'auto',
-  },
   table: {
     width: '100%',
     borderCollapse: 'collapse',
@@ -111,5 +125,4 @@ const styles = {
     textAlign: 'left',
     borderBottom: '1px solid #ddd',
   },
-  // Agrega más estilos según sea necesario
 };
