@@ -9,7 +9,7 @@ export const Sidebar = ({ setSelectedOption }) => {
   return (
     <div style={styles.sidebar}>
       <Link to='' style={styles.link} onClick={() => setSelectedOption('Opción 1')}>Stock General</Link>
-      <Link to='' style={styles.link} onClick={() => setSelectedOption('Opción 2')}>Opcion 2</Link>
+      <Link to='' style={styles.link} onClick={() => setSelectedOption('Opción 2')}>Alta Productos</Link>
       <Link
         to=''
         style={user.isSuperAdmin ? styles.link : { ...styles.link, ...styles.linkDisabled }}

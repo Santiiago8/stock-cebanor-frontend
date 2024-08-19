@@ -27,11 +27,19 @@ function createWindow() {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+    mainWindow.focus()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  mainWindow.on('focus', () => {
+    mainWindow.webContents.focus() // Asegura que el contenido también esté enfocado
+  })
+
+  mainWindow.on('blur', () => {
   })
 
   // HMR for renderer base on electron-vite cli.

@@ -1,34 +1,11 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useTable, useGlobalFilter } from 'react-table';
+import { StockContext } from '../../context/StockContext'; // Asegúrate de que la ruta sea correcta
 
 export const StockPage = () => {
-  // Estado para los productos
-  const [products, setProducts] = useState([]);
-  const [searchInput, setSearchInput] = useState('');
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/products');
-        const data = await response.json();
-        // Mapear los datos para adaptarlos a la estructura de la tabla
-        const mappedProducts = data.map(product => ({
-          name: product.nombre,
-          description: product.descripcion,
-          price: product.precio,
-          stock: product.stores.map(store => `${store.store_name}: ${store.stock}`).join(', '),
-          stores: product.stores.map(store => store.store_name).join(', '),
-        }));
-        setProducts(mappedProducts);
-        console.log('estos son los productos: ', mappedProducts);
-      } catch (error) {
-        console.error('algo salió mal: ', error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  const { products, loading } = useContext(StockContext); // Usa el contexto para obtener productos y estado de carga
+  const [searchInput, setSearchInput] = React.useState('');
 
   const data = useMemo(() => products, [products]);
 
@@ -53,6 +30,14 @@ export const StockPage = () => {
     setSearchInput(e.target.value);
     setGlobalFilter(e.target.value);
   };
+
+  if (loading) {
+    return <div style={styles.loading}>Cargando...</div>;
+  }
+
+  if (!products.length) {
+    return <div style={styles.noProducts}>No hay productos disponibles</div>;
+  }
 
   return (
     <div style={styles.container}>
@@ -97,7 +82,7 @@ export const StockPage = () => {
 const styles = {
   container: {
     padding: '20px',
-    width: '100vh',
+    width: '80vw',
     height: '100vh',
     boxSizing: 'border-box',
     display: 'flex',
@@ -124,5 +109,15 @@ const styles = {
     padding: '12px',
     textAlign: 'left',
     borderBottom: '1px solid #ddd',
+  },
+  loading: {
+    padding: '20px',
+    fontSize: '18px',
+    textAlign: 'center',
+  },
+  noProducts: {
+    padding: '20px',
+    fontSize: '18px',
+    textAlign: 'center',
   },
 };
