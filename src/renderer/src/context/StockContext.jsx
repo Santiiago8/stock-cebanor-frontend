@@ -14,10 +14,15 @@ export const StockProvider = ({ children }) => {
       const response = await fetch('http://localhost:3000/products');
       const data = await response.json();
       const mappedProducts = data.map(product => ({
+        id: product.id,
         name: product.nombre,
         description: product.descripcion,
         price: product.precio,
-        stock: product.stores.map(store => `${store.store_name}: ${store.stock}`).join(', '),
+        stockData: product.stores.map(store => ({
+          store_id: store.store_id,
+          store_name: store.store_name,
+          stock: store.stock,
+        })),
         stores: product.stores.map(store => store.store_name).join(', '),
       }));
       setProducts(mappedProducts);
@@ -28,10 +33,13 @@ export const StockProvider = ({ children }) => {
     }
   };
 
+
   // Actualizar stock después de un put
   const updateStock = async (productId, storeId, quantity) => {
+    console.log('data -> ', productId, storeId, quantity);
+
     try {
-      const response = await fetch(`http://localhost:3000/products/update`, {
+      const response = await fetch('http://localhost:3000/product-stocks/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -52,6 +60,7 @@ export const StockProvider = ({ children }) => {
       console.error('Error:', error);
     }
   };
+
 
   useEffect(() => {
     fetchStock();
