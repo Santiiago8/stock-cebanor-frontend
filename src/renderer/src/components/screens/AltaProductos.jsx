@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { StockContext } from '../../context/StockContext';
 
 export const AltaProductos = () => {
+  const { addProduct } = useContext(StockContext);
   const [product, setProduct] = useState({
     nombre: '',
     descripcion: '',
@@ -53,35 +55,23 @@ export const AltaProductos = () => {
   }
 
   const handleSubmit = async (e) => {
-    console.log(product);
-
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/products/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(product),
+      await addProduct(product);
+      alert('Producto creado exitosamente!');
+      // Resetear form
+      setProduct({
+        nombre: '',
+        descripcion: '',
+        precio: '',
+        stock: [],
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        alert('Producto creado exitosamente!');
-        //Resetear form
-        setProduct({
-          nombre: '',
-          descripcion: '',
-          precio: '',
-          stock: [],
-        });
-      } else {
-        alert('Hubo un error al crear el producto');
-      }
     } catch (error) {
       console.error('Error:', error);
+      alert('Hubo un error al crear el producto');
     }
   }
+
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
       <div style={styles.formGroup}>

@@ -61,13 +61,33 @@ export const StockProvider = ({ children }) => {
     }
   };
 
+  const addProduct = async (product) => {
+    try {
+      const response = await fetch('http://localhost:3000/products/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(product),
+      });
+
+      if (response.ok) {
+        fetchStock(); // Volver a cargar el stock actualizado
+      } else {
+        console.error('Error al agregar el producto');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
 
   useEffect(() => {
     fetchStock();
   }, []);
 
   return (
-    <StockContext.Provider value={{ products, loading, updateStock }}>
+    <StockContext.Provider value={{ products, loading, updateStock, addProduct }}>
       {children}
     </StockContext.Provider>
   );
