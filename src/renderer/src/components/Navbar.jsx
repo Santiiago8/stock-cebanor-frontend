@@ -11,7 +11,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     navigate('/login');
-    alert('Session cerrada')
+    alert('Sesion cerrada')
   };
 
   return (

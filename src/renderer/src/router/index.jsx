@@ -9,7 +9,6 @@ import { StockPage } from '../components/screens/StockPage';
 import { AltaProductos } from '../components/screens/AltaProductos';
 import { AltaUsuarios } from '../components/screens/AltaUsuarios';
 import { Stores } from '../components/screens/Stores';
-import { Bienvenida } from '../components/Bienvenida';
 
 const ProtectedLayout = () => {
   const [selectedOption, setSelectedOption] = useState('Opción 1');
@@ -25,7 +24,7 @@ const ProtectedLayout = () => {
       case 'Opción 4':
         return <Stores />;
       default:
-        return <Bienvenida />;
+        return <StockPage />;
     }
   };
 

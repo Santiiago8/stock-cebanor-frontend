@@ -32,10 +32,12 @@ export const StockPage = () => {
       Header: 'Acciones',
       accessor: 'actions',
       Cell: ({ row }) => (
-        <button  onClick={() => {
+        <button
+          onClick={() => {
             console.log('Producto:', row.original);
             handleEditClick(row.original.id);
           }}
+          style={styles.deleteButton}
         >
           Editar
         </button>
@@ -178,5 +180,14 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
+  },
+  deleteButton: {
+    padding: '6px 12px',
+    backgroundColor: 'green',
+    color: 'white',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
   },
 }

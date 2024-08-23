@@ -98,11 +98,12 @@ export const AltaUsuarios = () => {
 
 const styles = {
   container: {
-    width: '800px',
-    height: '600px',
+    width: '80vw',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+
   },
   formContainer: {
     padding: '20px',
@@ -112,6 +113,7 @@ const styles = {
     border: '1px solid #ddd',
     borderRadius: '8px',
     backgroundColor: '#f9f9f9',
+
   },
   form: {
     display: 'flex',

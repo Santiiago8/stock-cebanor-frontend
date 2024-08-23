@@ -18,7 +18,14 @@ export const Sidebar = ({ setSelectedOption }) => {
       >
         Alta Usuarios
       </Link>
-      <Link to='' style={styles.link} onClick={() => setSelectedOption('Opción 4')}>Opcion 4</Link>
+      <Link
+        to=''
+        style={user.isSuperAdmin ? styles.link : { ...styles.link, ...styles.linkDisabled }}
+        onClick={() => user.isSuperAdmin && setSelectedOption('Opción 4')}
+        disabled={!user.isSuperAdmin}
+      >
+        Alta/Baja Tiendas
+      </Link>
     </div>
   )
 }
